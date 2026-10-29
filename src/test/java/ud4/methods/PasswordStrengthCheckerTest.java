@@ -46,9 +46,20 @@ class PasswordStrengthCheckerTest {
             "ABCD++--",
     }
     )
-    void MediumTests(String password){
+    void MediumTests(String password) {
         PasswordStrengthChecker.PasswordStrength actual = checkStrength(password);
 
         assertEquals(PasswordStrengthChecker.PasswordStrength.MEDIUM, actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abcDEF*+",
+    }
+    )
+    void strongTests(String password){
+        PasswordStrengthChecker.PasswordStrength actual = checkStrength(password);
+
+        assertEquals(PasswordStrengthChecker.PasswordStrength.STRONG, actual);
     }
 }
