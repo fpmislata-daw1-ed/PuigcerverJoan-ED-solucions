@@ -33,9 +33,22 @@ class PasswordStrengthCheckerTest {
             "++--**//"
     }
     )
-    void weakTests(String password){
+    void weakTests(String password) {
         PasswordStrengthChecker.PasswordStrength actual = checkStrength(password);
 
         assertEquals(PasswordStrengthChecker.PasswordStrength.WEAK, actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abcdEFGH",
+            "abcd++--",
+            "ABCD++--",
+    }
+    )
+    void MediumTests(String password){
+        PasswordStrengthChecker.PasswordStrength actual = checkStrength(password);
+
+        assertEquals(PasswordStrengthChecker.PasswordStrength.MEDIUM, actual);
     }
 }
