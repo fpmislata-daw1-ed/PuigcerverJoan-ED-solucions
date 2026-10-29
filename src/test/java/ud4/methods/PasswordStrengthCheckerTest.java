@@ -1,12 +1,10 @@
 package ud4.methods;
 
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ud4.methods.PasswordStrengthChecker.checkStrength;
 
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -22,9 +20,22 @@ class PasswordStrengthCheckerTest {
             "5aBx+!g",
         }
     )
-    void invalidTests(String password){
+    void invalidTests(String password) {
         PasswordStrength actual = checkStrength(password);
 
         assertEquals(PasswordStrength.INVALID, actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abcdefgh",
+            "ABCDEFGH",
+            "++--**//"
+    }
+    )
+    void weakTests(String password){
+        PasswordStrengthChecker.PasswordStrength actual = checkStrength(password);
+
+        assertEquals(PasswordStrengthChecker.PasswordStrength.WEAK, actual);
     }
 }
