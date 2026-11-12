@@ -1,36 +1,31 @@
 package ud3.productes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class CistellaCompra {
     private final User user;
-    private final List<CistellaProduct> products;
+    private final Map<Product, CistellaProduct> products;
 
     public CistellaCompra(User user) {
         this.user = user;
-        this.products = new ArrayList<>();
+        this.products = new HashMap<>();
     }
 
     public double getTotalPrice(){
-        return products.stream()
-                .mapToDouble(
-                        p -> p.getQuantity() * p.getProduct().getPrice()
-                ).sum();
+        double totalPrice = 0;
+        for (Map.Entry<Product, CistellaProduct> entry : products.entrySet()) {
+            totalPrice += entry.getKey().getPrice() * entry.getValue().getQuantity();
+        }
+        return totalPrice;
     }
 
     public void addProduct(Product p){
-        Optional<CistellaProduct> cistellaProduct = products.stream()
-                .filter(cp -> cp.getProduct().equals(p))
-                .findAny();
-
-        if (cistellaProduct.isPresent()) {
-            int quantity = cistellaProduct.get().getQuantity();
-            cistellaProduct.get().setQuantity(quantity + 1);
+        if (products.containsKey(p)) {
+            int quantity = products.get(p).getQuantity();
+            products.get(p).setQuantity(quantity + 1);
         } else {
-            CistellaProduct newCistellaProduct = new CistellaProduct(p, 1);
-            products.add(newCistellaProduct);
+            CistellaProduct newCistellaProduct = new CistellaProduct(1);
+            products.put(p, newCistellaProduct);
         }
     }
 }
